@@ -1,0 +1,15 @@
+MODULE counter
+VAR
+	dig: 0..9;
+ASSIGN
+	init(dig) := 0;
+	next(dig) := (dig + 1) mod 10;
+
+MODULE main
+VAR
+	c0 : counter;
+	c1 : counter;
+	sum : 0..99;
+
+ASSIGN
+	sum := 10 * c1.dig + c0.dig;

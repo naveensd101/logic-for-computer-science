@@ -1,0 +1,15 @@
+MODULE main
+VAR
+	s : {s0, s1, s2, s3};
+
+IVAR
+	i : {a, b};
+
+ASSIGN
+	init(s) := s0;
+	next(s) := case
+		s = s0 & i = a : s1;
+		s = s1 & i = b : s2;
+		s = s2 & i = b : s0;
+		TRUE           : s ;
+	esac;

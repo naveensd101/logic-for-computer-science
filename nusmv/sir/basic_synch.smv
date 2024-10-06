@@ -1,0 +1,36 @@
+MODULE proc(p)
+VAR 	s: 0..3;
+IVAR	m  : {a,b};
+ASSIGN
+	init(s):=0;
+	next(s):=case
+		s=0 & m=p.m & m=a 	: 1;
+		s=0 & m=p.m & m=b	: 2;		
+		s=1 & m=p.m & m=b	: 3;
+		s=2 & m=p.m	& m=a	: 3;
+		--s=3					: 0;
+		TRUE				: s;
+	esac;
+
+
+--MODULE proc2(p)
+--VAR 	s: 0..3;
+--IVAR	m  : {a,b};
+--ASSIGN
+--	init(s):=0;
+--	next(s):=case
+--		s=0 & m=p.m & m=a  	: 1;
+--		s=0 & m=p.m & m=b  	: 2;		
+--		s=1 & m=p.m	& m=b	: 3;
+--		s=2 & m=p.m & m=a	: 3;
+--		s=3					: 0;
+--		TRUE				: s;
+--	esac;
+
+	
+MODULE main
+VAR 
+	p1 : proc(p2);
+	p2 : proc(p1);
+	
+	

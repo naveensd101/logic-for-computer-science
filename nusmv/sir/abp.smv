@@ -1,0 +1,93 @@
+-- Alternative Bit Protocol
+-- Asynchronous
+-- Queue size 1
+MODULE user1(q1,q2)
+VAR
+    s : {p0,p1,p2,p3};
+ASSIGN
+    init(s) := p0;
+    next(s) := case
+        s=p0 & q1 =0 : p1;
+        s=p1 & q1 =0 : p2;
+        s=p2 & q2 =1 : p3;
+        s=p3 & q1 =0 : p2;
+        TRUE         : s;
+    esac;
+    next(q1) := case
+MODULE proc(p)
+VAR 	s: 0..3;
+IVAR	m  : {a,b};
+ASSIGN
+	init(s):=0;
+	next(s):=case
+		s=0 & m=p.m & m=a 	: 1;
+		s=0 & m=p.m & m=b	: 2;		
+		s=1 & m=p.m & m=b	: 3;
+		s=2 & m=p.m	& m=a	: 3;
+		s=3					: 0;
+		TRUE				: s;
+	esac;
+
+
+--MODULE proc2(p)
+--VAR 	s: 0..3;
+--IVAR	m  : {a,b};
+--ASSIGN
+--	init(s):=0;
+--	next(s):=case
+--		s=0 & m=p.m & m=a  	: 1;
+--		s=0 & m=p.m & m=b  	: 2;		
+--		s=1 & m=p.m	& m=b	: 3;
+--		s=2 & m=p.m & m=a	: 3;
+--		s=3					: 0;
+--		TRUE				: s;
+--	esac;
+
+	
+MODULE main
+VAR 
+	p1 : proc(p2);
+	p2 : proc(p1);
+	
+	
+        q1 =0 & s=p0 : 1;
+        q1 =0 & s=p1 : 1;
+        TRUE         : q1;
+    esac;
+    next(q2) := case
+        q2 =1 & s=p2 : 0;
+        TRUE         : q2;
+    esac;
+   
+MODULE user2(q1,q2)
+VAR
+    s : {p0,p1};
+ASSIGN
+    init(s) := p0;
+    next(s) := case
+        s=p0 & q2 =0 : p1;
+        s=p1 & q1 =1 : p0;
+        TRUE         : s;
+    esac;
+    next(q2) := case
+        q2 =0 & s=p0 : 1;
+        TRUE         : q2;
+    esac;    
+    next(q1) := case
+        q1 =1 & s=p1 : 0;
+        TRUE         : q1;
+    esac;
+    
+MODULE main
+VAR q1 : 0..1;
+    q2 : 0..1;
+    u1 : process user1(q1,q2);
+    u2 : process user2(q1,q2);
+ASSIGN
+    init(q1) := 0;
+    init(q2) := 0;
+    
+    
+SPEC EG(q1=1 -> EF(q1=0))
+SPEC AG(q1=1 -> EF(q1=0))
+SPEC AG(q1=1 -> AF(q1=0))

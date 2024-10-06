@@ -1,0 +1,17 @@
+MODULE counter(prev)
+VAR
+	dig : 0..9;
+ASSIGN
+	init(dig) := 0;
+	next(dig) := case
+		prev = 9 : (dig + 1) mod 10;
+		TRUE     : dig;
+	esac;
+
+MODULE main
+VAR
+	c0 : counter(9);
+	c1 : counter(c0.dig);
+	sum : 0..99;
+ASSIGN
+	sum := c1.dig * 10 + c0.dig;

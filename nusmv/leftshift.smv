@@ -1,0 +1,15 @@
+MODULE main
+VAR
+	x0: boolean;
+	x1: boolean;
+	x2: boolean;
+
+ASSIGN
+	init(x0) := TRUE;
+	init(x1) := FALSE;
+	init(x2) := TRUE;
+	next(x0) := x2;
+	next(x1) := x0;
+	next(x2) := x1;
+
+INVARSPEC !(x0 xor x1 xor x2)

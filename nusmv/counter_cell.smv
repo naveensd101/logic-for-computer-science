@@ -1,0 +1,13 @@
+MODULE counter_cell(carry_in)
+VAR
+	val: boolean;
+ASSIGN
+	init(val) := FALSE;
+	next(val) := val xor carry_in;
+DEFINE
+	carry_out := val & carry_in;
+
+MODULE main
+VAR
+	bit_0 : counter_cell(TRUE);
+	bit_1 : counter_cell(bit_0.carry_out);

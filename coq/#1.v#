@@ -1,0 +1,11 @@
+Section Prop_Logic.
+Variables p q r: Prop.
+Hypothesis H1: p /\ q: Prop.
+Hypothesis H2: r: Prop.
+
+Theorem EX0: q /\ r: Prop.
+  split.
+  destruct H1 as [H3 H4].
+  exact H4.
+  exact H2.
+Qed.
